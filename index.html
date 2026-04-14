@@ -6,199 +6,265 @@
 <title>Furkan Özdoğan | Bilgisayar Programcısı</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050a0f;--bg2:#080e15;--panel:#0b1520;--border:#1a3a5c;--accent:#00d4ff;--accent2:#ff6b35;--accent3:#39ff14;--text:#c8dff0;--dim:#4a7a9b;--glow:rgba(0,212,255,.4);}
+:root{
+  --bg:#050a0f;--bg2:#080e15;--panel:#0b1520;--border:#1a3a5c;
+  --accent:#00d4ff;--accent2:#ff6b35;--accent3:#39ff14;
+  --text:#c8dff0;--dim:#4a7a9b;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
 
-/* ── CURSOR ── */
+/* CURSOR */
 .cursor{width:11px;height:11px;border:2px solid var(--accent);position:fixed;border-radius:50%;pointer-events:none;z-index:10000;mix-blend-mode:screen;}
-.cursor-trail{width:26px;height:26px;border:1px solid rgba(0,212,255,.22);position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transition:left .15s,top .15s;mix-blend-mode:screen;}
+.cursor-trail{width:26px;height:26px;border:1px solid rgba(0,212,255,.2);position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transition:left .15s,top .15s;mix-blend-mode:screen;}
 
 /* ══ INTRO ══ */
-#intro{position:fixed;inset:0;background:var(--bg);z-index:9000;overflow:hidden;transition:opacity .8s ease .1s,visibility .8s ease .1s;}
+#intro{position:fixed;inset:0;background:var(--bg);z-index:9000;overflow:hidden;
+  transition:opacity .9s ease,visibility .9s ease;}
 #intro.hide{opacity:0;visibility:hidden;pointer-events:none;}
-#intro::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.035) 1px,transparent 1px);background-size:40px 40px;animation:gP 3s ease infinite;}
-@keyframes gP{0%,100%{opacity:.5}50%{opacity:1}}
-.hud-corner{position:absolute;width:46px;height:46px;border-color:var(--accent);border-style:solid;opacity:.5;}
-.hud-corner.tl{top:14px;left:14px;border-width:2px 0 0 2px;}
-.hud-corner.tr{top:14px;right:14px;border-width:2px 2px 0 0;}
-.hud-corner.bl{bottom:14px;left:14px;border-width:0 0 2px 2px;}
-.hud-corner.br{bottom:14px;right:14px;border-width:0 2px 2px 0;}
-.scanline{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);top:0;animation:sc 2s linear infinite;opacity:.2;}
-@keyframes sc{0%{top:0}100%{top:100%}}
+#intro::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);
+  background-size:40px 40px;animation:gPulse 3s ease infinite;}
+@keyframes gPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* drone */
-#drone-wrapper{position:absolute;right:-300px;top:50%;transform:translateY(-50%);opacity:0;animation:dE 1.4s cubic-bezier(.16,1,.3,1) .3s forwards;filter:drop-shadow(0 0 18px var(--accent)) drop-shadow(0 0 50px rgba(0,212,255,.2));}
-@keyframes dE{0%{right:-300px;opacity:0;transform:translateY(-50%) scale(2.2);}40%{opacity:1;}70%{right:14%;transform:translateY(-50%) scale(1.04);}85%{right:12%;transform:translateY(-50%) scale(.98);}100%{right:13%;opacity:1;transform:translateY(-50%) scale(1);}}
-.drone-svg{width:255px;height:255px;}
-.drone-bob{animation:dB 3s ease-in-out infinite;}
-@keyframes dB{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.prop-tl{animation:sp .15s linear infinite;transform-origin:68px 68px;}
-.prop-tr{animation:spr .15s linear infinite;transform-origin:252px 68px;}
-.prop-bl{animation:sp .15s linear infinite;transform-origin:68px 252px;}
-.prop-br{animation:spr .15s linear infinite;transform-origin:252px 252px;}
-@keyframes sp{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes spr{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+.hud{position:absolute;width:44px;height:44px;border-color:var(--accent);border-style:solid;opacity:.45;}
+.hud.tl{top:14px;left:14px;border-width:2px 0 0 2px;}
+.hud.tr{top:14px;right:14px;border-width:2px 2px 0 0;}
+.hud.bl{bottom:14px;left:14px;border-width:0 0 2px 2px;}
+.hud.br{bottom:14px;right:14px;border-width:0 2px 2px 0;}
+.scanline{position:absolute;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  top:0;animation:scan 2s linear infinite;opacity:.18;}
+@keyframes scan{0%{top:0}100%{top:100%}}
 
-/* intro text */
-.intro-text-wrap{position:absolute;left:8%;top:50%;transform:translateY(-50%);opacity:0;animation:iIn .8s ease 1.2s forwards;}
-@keyframes iIn{from{opacity:0;transform:translateY(-50%) translateX(-20px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
-.intro-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;opacity:.7;}
-.intro-name{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:900;line-height:1;color:#fff;text-shadow:0 0 26px var(--accent);letter-spacing:2px;}
-.intro-name span{color:var(--accent);}
-.intro-title{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:300;color:var(--dim);letter-spacing:5px;margin-top:10px;text-transform:uppercase;}
-.intro-bar-wrap{margin-top:28px;width:272px;}
-.intro-bar-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:3px;margin-bottom:7px;display:flex;justify-content:space-between;}
-.intro-bar{height:2px;background:rgba(0,212,255,.1);overflow:hidden;}
-.intro-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;box-shadow:0 0 8px var(--accent);transition:width .05s linear;}
+/* drone – masaüstü */
+#droneWrap{position:absolute;right:-300px;top:50%;transform:translateY(-50%);opacity:0;
+  animation:droneIn 1.4s cubic-bezier(.16,1,.3,1) .3s forwards;
+  filter:drop-shadow(0 0 16px var(--accent)) drop-shadow(0 0 44px rgba(0,212,255,.18));}
+@keyframes droneIn{
+  0%{right:-300px;opacity:0;transform:translateY(-50%) scale(2.2);}
+  40%{opacity:1;}70%{right:14%;transform:translateY(-50%) scale(1.04);}
+  85%{right:12%;transform:translateY(-50%) scale(.98);}
+  100%{right:13%;opacity:1;transform:translateY(-50%) scale(1);}
+}
+.drone-bob{animation:bob 3s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.p-tl{animation:sp .15s linear infinite;transform-origin:68px 68px;}
+.p-tr{animation:spr .15s linear infinite;transform-origin:252px 68px;}
+.p-bl{animation:sp .15s linear infinite;transform-origin:68px 252px;}
+.p-br{animation:spr .15s linear infinite;transform-origin:252px 252px;}
+@keyframes sp{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes spr{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
 
-/* mobile ring */
-.mobile-ring{display:none;position:absolute;left:0;right:0;top:22%;align-items:center;justify-content:center;pointer-events:none;}
-.ring-o{position:absolute;width:168px;height:168px;border:1px solid rgba(0,212,255,.25);border-radius:50%;animation:rP 3s ease-in-out infinite;}
-.ring-m{position:absolute;width:118px;height:118px;border:1px solid rgba(0,212,255,.45);border-radius:50%;animation:rP 3s ease-in-out .4s infinite;}
-.ring-i{width:70px;height:70px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(0,212,255,.35);animation:rP 3s ease-in-out .8s infinite;}
-.ring-d{width:13px;height:13px;background:var(--accent);border-radius:50%;box-shadow:0 0 13px var(--accent);animation:blk 1.5s ease infinite;}
-@keyframes rP{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-@keyframes blk{0%,100%{opacity:1}50%{opacity:.15}}
+/* mobil emblem canvas */
+#mobileEmblem{display:none;position:absolute;top:0;left:0;width:100%;height:58%;}
 
-/* ══ MAIN SITE ══ */
+/* intro metin */
+.intro-txt{position:absolute;left:8%;top:50%;transform:translateY(-50%);opacity:0;
+  animation:txtIn .8s ease 1.2s forwards;}
+@keyframes txtIn{from{opacity:0;transform:translateY(-50%) translateX(-18px)}
+  to{opacity:1;transform:translateY(-50%) translateX(0)}}
+.i-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);
+  letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;opacity:.7;}
+.i-name{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:900;line-height:1;color:#fff;text-shadow:0 0 24px var(--accent);letter-spacing:2px;}
+.i-name span{color:var(--accent);}
+.i-sub{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:300;
+  color:var(--dim);letter-spacing:5px;margin-top:10px;text-transform:uppercase;}
+.i-bar-wrap{margin-top:28px;width:270px;}
+.i-bar-row{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);
+  letter-spacing:3px;margin-bottom:7px;display:flex;justify-content:space-between;}
+.i-bar{height:2px;background:rgba(0,212,255,.1);overflow:hidden;}
+.i-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  box-shadow:0 0 8px var(--accent);}
+
+/* ══ SITE ══ */
 #site{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease;}
-#site.visible{opacity:1;transform:translateY(0);}
+#site.on{opacity:1;transform:translateY(0);}
 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:15px 52px;background:linear-gradient(180deg,rgba(5,10,15,.96) 0%,transparent 100%);border-bottom:1px solid rgba(26,58,92,.3);backdrop-filter:blur(10px);}
-.nav-logo{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:var(--accent);letter-spacing:3px;text-decoration:none;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;
+  justify-content:space-between;padding:15px 52px;
+  background:linear-gradient(180deg,rgba(5,10,15,.96),transparent);
+  border-bottom:1px solid rgba(26,58,92,.3);backdrop-filter:blur(10px);}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;
+  color:var(--accent);letter-spacing:3px;text-decoration:none;}
 .nav-logo span{color:var(--dim);}
 .nav-links{display:flex;gap:34px;}
-.nav-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .3s;position:relative;}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--accent);transform:scaleX(0);transition:transform .3s;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;
+  color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;
+  background:var(--accent);transform:scaleX(0);transition:transform .3s;}
 .nav-links a:hover{color:var(--accent);}
 .nav-links a:hover::after{transform:scaleX(1);}
 
-/* ── HERO ── */
-#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:78px 52px 48px;position:relative;overflow:hidden;gap:30px;}
-.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.037) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.037) 1px,transparent 1px);background-size:50px 50px;animation:gDrift 20s linear infinite;}
-@keyframes gDrift{0%{background-position:0 0}100%{background-position:50px 50px}}
-.hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 80% 50%,rgba(0,212,255,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 50% at 20% 80%,rgba(255,107,53,.05) 0%,transparent 60%);}
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;
+  padding:78px 52px 48px;position:relative;overflow:hidden;gap:30px;}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,212,255,.036) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,255,.036) 1px,transparent 1px);
+  background-size:50px 50px;animation:drift 20s linear infinite;}
+@keyframes drift{0%{background-position:0 0}100%{background-position:50px 50px}}
+.hero-grad{position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 80% 50%,rgba(0,212,255,.07),transparent 70%),
+    radial-gradient(ellipse 40% 50% at 20% 80%,rgba(255,107,53,.05),transparent 60%);}
 
-.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;height:450px;z-index:1;}
-#islandCanvas{width:100%;height:100%;display:block;filter:drop-shadow(0 14px 48px rgba(0,212,255,.12));}
+/* canvas sol */
+.hero-vis{position:relative;display:flex;align-items:center;justify-content:center;height:450px;z-index:1;}
+#trackCanvas{width:100%;height:100%;display:block;filter:drop-shadow(0 14px 46px rgba(0,212,255,.12));}
 .orb{position:absolute;border-radius:50%;pointer-events:none;}
-.orb1{width:8px;height:8px;background:var(--accent);box-shadow:0 0 14px var(--accent);top:20%;left:12%;animation:oF1 4s ease-in-out infinite;}
-.orb2{width:5px;height:5px;background:var(--accent2);box-shadow:0 0 10px var(--accent2);top:60%;left:8%;animation:oF2 5s ease-in-out infinite .8s;}
-.orb3{width:6px;height:6px;background:var(--accent3);box-shadow:0 0 11px var(--accent3);top:28%;right:8%;animation:oF1 3.5s ease-in-out infinite 1.2s;}
-.orb4{width:4px;height:4px;background:var(--accent);box-shadow:0 0 9px var(--accent);bottom:24%;right:14%;animation:oF2 6s ease-in-out infinite .4s;}
-@keyframes oF1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(7px,-11px) scale(1.2)}66%{transform:translate(-5px,5px) scale(.9)}}
-@keyframes oF2{0%,100%{transform:translate(0,0)}50%{transform:translate(-9px,-14px)}}
-.scan-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,255,.11);animation:rExp 4s ease-out infinite;pointer-events:none;}
-.scan-ring:nth-child(2){animation-delay:1.3s;}.scan-ring:nth-child(3){animation-delay:2.6s;}
-@keyframes rExp{0%{width:65px;height:65px;opacity:.6;margin-left:-32px;margin-top:-32px}100%{width:370px;height:370px;opacity:0;margin-left:-185px;margin-top:-185px}}
-.scan-ring-wrap{position:absolute;left:50%;top:50%;pointer-events:none;}
+.o1{width:8px;height:8px;background:var(--accent);box-shadow:0 0 14px var(--accent);top:20%;left:12%;animation:of1 4s ease-in-out infinite;}
+.o2{width:5px;height:5px;background:var(--accent2);box-shadow:0 0 10px var(--accent2);top:60%;left:8%;animation:of2 5s ease-in-out .8s infinite;}
+.o3{width:6px;height:6px;background:var(--accent3);box-shadow:0 0 11px var(--accent3);top:28%;right:8%;animation:of1 3.5s ease-in-out 1.2s infinite;}
+.o4{width:4px;height:4px;background:var(--accent);box-shadow:0 0 9px var(--accent);bottom:24%;right:14%;animation:of2 6s ease-in-out .4s infinite;}
+@keyframes of1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(7px,-11px) scale(1.2)}66%{transform:translate(-5px,5px) scale(.9)}}
+@keyframes of2{0%,100%{transform:translate(0,0)}50%{transform:translate(-9px,-14px)}}
+.sring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,255,.1);animation:rexp 4s ease-out infinite;pointer-events:none;}
+.sring:nth-child(2){animation-delay:1.3s;}.sring:nth-child(3){animation-delay:2.6s;}
+@keyframes rexp{0%{width:60px;height:60px;opacity:.6;margin-left:-30px;margin-top:-30px}
+  100%{width:360px;height:360px;opacity:0;margin-left:-180px;margin-top:-180px}}
+.sring-wrap{position:absolute;left:50%;top:50%;pointer-events:none;}
 
-.hero-content{position:relative;z-index:1;animation:hTI 1s ease .3s both;}
-@keyframes hTI{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:translateX(0)}}
-.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:13px;}
-.hero-eyebrow::before{content:'';display:inline-block;width:34px;height:1px;background:var(--accent);}
-.hero-name{font-family:'Orbitron',sans-serif;font-size:clamp(2.3rem,4vw,4.6rem);font-weight:900;line-height:1;color:#fff;letter-spacing:-1px;position:relative;}
-.hero-name .accent{color:var(--accent);}
-.hero-name::before,.hero-name::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%);}
-.hero-name::before{color:var(--accent);left:2px;animation:g1 6s infinite 2s;}
-.hero-name::after{color:var(--accent2);left:-2px;animation:g2 6s infinite 2.5s;}
-@keyframes g1{0%,94%,100%{opacity:0}95%{opacity:1;transform:translateX(-3px)}97%{opacity:1;transform:translateX(3px)}}
-@keyframes g2{0%,94%,100%{opacity:0}96%{opacity:1;transform:translateX(3px)}98%{opacity:1;transform:translateX(-2px)}}
-.hero-title{font-family:'Rajdhani',sans-serif;font-size:1.25rem;font-weight:300;color:var(--dim);letter-spacing:5px;text-transform:uppercase;margin:13px 0 22px;}
-.hero-title::after{content:'|';color:var(--accent);animation:blk 1s step-end infinite;margin-left:3px;}
-.hero-desc{font-size:.96rem;line-height:1.8;color:var(--text);border-left:2px solid var(--accent);padding-left:16px;}
-.hero-stats{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
-.stat-card{background:var(--panel);border:1px solid var(--border);padding:13px 18px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;animation:sRA .5s ease both;}
-.stat-card:nth-child(1){animation-delay:.8s;}.stat-card:nth-child(2){animation-delay:1s;}.stat-card:nth-child(3){animation-delay:1.2s;}
-.stat-card:hover{border-color:var(--accent);transform:translateY(-3px);}
-@keyframes sRA{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .3s;transform-origin:left;}
-.stat-card:hover::before{transform:scaleX(1);}
-.stat-num{font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:900;color:var(--accent);line-height:1;}
-.stat-label{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:2px;margin-top:5px;text-transform:uppercase;}
-.hero-cta{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;}
-.btn-primary{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:13px 30px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:8px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);font-weight:700;position:relative;overflow:hidden;}
-.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.26),transparent);transform:translateX(-100%);transition:transform .5s;}
-.btn-primary:hover::after{transform:translateX(100%);}
-.btn-primary:hover{background:#fff;transform:translateY(-2px);box-shadow:0 7px 20px rgba(0,212,255,.26);}
-.btn-secondary{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:13px 30px;background:transparent;color:var(--accent);border:1px solid var(--border);cursor:pointer;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:8px;}
-.btn-secondary:hover{border-color:var(--accent);background:rgba(0,212,255,.05);transform:translateY(-2px);}
+/* hero sağ metin */
+.hero-txt{position:relative;z-index:1;animation:htIn 1s ease .3s both;}
+@keyframes htIn{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+.h-brow{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);
+  letter-spacing:5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:13px;}
+.h-brow::before{content:'';display:inline-block;width:32px;height:1px;background:var(--accent);}
 
-/* ── SECTIONS ── */
+/* ── İSİM GLİTCH – DÜZELTİLDİ ── */
+.h-name{font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,4vw,4.5rem);
+  font-weight:900;line-height:1.05;color:#fff;letter-spacing:-1px;position:relative;display:inline-block;}
+.h-name .accent{color:var(--accent);}
+/* Glitch katmanları sadece ilk satır için, ::before ve ::after kaldırıldı.
+   Bunun yerine JS ile kontrol edilen ayrı span kullanılıyor */
+.glitch-layer{position:absolute;top:0;left:0;width:100%;height:100%;
+  clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%);
+  font-family:'Orbitron',sans-serif;font-size:clamp(2.2rem,4vw,4.5rem);
+  font-weight:900;line-height:1.05;letter-spacing:-1px;
+  pointer-events:none;opacity:0;}
+.glitch-layer.g1{color:var(--accent);animation:g1 7s infinite 2s;}
+.glitch-layer.g2{color:var(--accent2);animation:g2 7s infinite 2.6s;}
+@keyframes g1{0%,93%,100%{opacity:0;transform:none}
+  94%{opacity:1;transform:translateX(-3px)}96%{opacity:1;transform:translateX(3px)}}
+@keyframes g2{0%,93%,100%{opacity:0;transform:none}
+  95%{opacity:1;transform:translateX(3px)}97%{opacity:1;transform:translateX(-2px)}}
+
+.h-title{font-family:'Rajdhani',sans-serif;font-size:1.25rem;font-weight:300;
+  color:var(--dim);letter-spacing:5px;text-transform:uppercase;margin:13px 0 22px;}
+.h-title::after{content:'|';color:var(--accent);animation:blink 1s step-end infinite;margin-left:3px;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.h-desc{font-size:.96rem;line-height:1.8;color:var(--text);border-left:2px solid var(--accent);padding-left:16px;}
+
+.h-stats{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.stat{background:var(--panel);border:1px solid var(--border);padding:13px 18px;
+  position:relative;overflow:hidden;transition:border-color .3s,transform .3s;animation:stIn .5s ease both;}
+.stat:nth-child(1){animation-delay:.8s;}.stat:nth-child(2){animation-delay:1s;}.stat:nth-child(3){animation-delay:1.2s;}
+.stat:hover{border-color:var(--accent);transform:translateY(-3px);}
+@keyframes stIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);
+  transition:transform .3s;transform-origin:left;}
+.stat:hover::before{transform:scaleX(1);}
+.snum{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;color:var(--accent);line-height:1;}
+.slbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:2px;margin-top:5px;text-transform:uppercase;}
+
+.h-cta{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;}
+.btn-p{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  padding:13px 30px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;
+  text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:8px;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);font-weight:700;position:relative;overflow:hidden;}
+.btn-p::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  transform:translateX(-100%);transition:transform .5s;}
+.btn-p:hover::after{transform:translateX(100%);}
+.btn-p:hover{background:#fff;transform:translateY(-2px);box-shadow:0 7px 20px rgba(0,212,255,.24);}
+.btn-s{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  padding:13px 30px;background:transparent;color:var(--accent);border:1px solid var(--border);
+  cursor:pointer;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:8px;}
+.btn-s:hover{border-color:var(--accent);background:rgba(0,212,255,.05);transform:translateY(-2px);}
+
+/* SECTIONS */
 section{padding:68px 52px;position:relative;}
-.section-header{display:flex;align-items:center;gap:18px;margin-bottom:40px;}
-.section-num{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:2px;}
-.section-title{font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:700;color:#fff;letter-spacing:3px;}
-.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.sec-hdr{display:flex;align-items:center;gap:18px;margin-bottom:40px;}
+.sec-num{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:2px;}
+.sec-ttl{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:700;color:#fff;letter-spacing:3px;}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
-/* ── SKILLS ── */
+/* SKILLS */
 #skills{background:var(--bg2);}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:11px;}
-.skill-item{background:var(--panel);border:1px solid var(--border);padding:14px 17px;display:flex;align-items:center;gap:11px;transition:all .3s;position:relative;overflow:hidden;cursor:default;}
-.skill-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform .3s;}
-.skill-item:hover{border-color:var(--accent);transform:translateX(4px);}
-.skill-item:hover::before{transform:scaleY(1);}
-.skill-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--accent);flex-shrink:0;}
-.skill-name{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);letter-spacing:1px;}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:11px;}
+.sk-item{background:var(--panel);border:1px solid var(--border);padding:14px 17px;
+  display:flex;align-items:center;gap:11px;transition:all .3s;position:relative;overflow:hidden;cursor:default;}
+.sk-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--accent);transform:scaleY(0);transition:transform .3s;}
+.sk-item:hover{border-color:var(--accent);transform:translateX(4px);}
+.sk-item:hover::before{transform:scaleY(1);}
+.sk-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 7px var(--accent);flex-shrink:0;}
+.sk-name{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);letter-spacing:1px;}
 
-/* ── EXPERIENCE ── */
+/* EXPERIENCE */
 #experience{background:var(--bg);}
-.exp-timeline{position:relative;padding-left:34px;}
-.exp-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--accent),transparent);}
-.exp-item{position:relative;margin-bottom:40px;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
-.exp-item.visible{opacity:1;transform:translateY(0);}
-.exp-dot{position:absolute;left:-40px;top:5px;width:10px;height:10px;border:2px solid var(--accent);background:var(--bg);box-shadow:0 0 10px var(--glow);}
-.exp-dot-inner{position:absolute;inset:2px;background:var(--accent);animation:dPulse 2s ease infinite;}
-@keyframes dPulse{0%,100%{opacity:1}50%{opacity:.22}}
-.exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
-.exp-company{font-family:'Orbitron',sans-serif;font-size:.98rem;font-weight:700;color:var(--accent);letter-spacing:2px;}
+.exp-line{position:relative;padding-left:34px;}
+.exp-line::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,var(--accent),transparent);}
+.exp-item{position:relative;margin-bottom:40px;opacity:0;transform:translateY(16px);
+  transition:opacity .6s ease,transform .6s ease;}
+.exp-item.on{opacity:1;transform:translateY(0);}
+.exp-dot{position:absolute;left:-40px;top:5px;width:10px;height:10px;
+  border:2px solid var(--accent);background:var(--bg);box-shadow:0 0 10px rgba(0,212,255,.4);}
+.exp-dot-in{position:absolute;inset:2px;background:var(--accent);animation:dp 2s ease infinite;}
+@keyframes dp{0%,100%{opacity:1}50%{opacity:.2}}
+.exp-hdr{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
+.exp-co{font-family:'Orbitron',sans-serif;font-size:.97rem;font-weight:700;color:var(--accent);letter-spacing:2px;}
 .exp-role{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
-.exp-date{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;background:var(--panel);border:1px solid var(--border);padding:3px 9px;white-space:nowrap;}
+.exp-date{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);
+  background:var(--panel);border:1px solid var(--border);padding:3px 9px;white-space:nowrap;}
 .exp-desc{font-size:.9rem;line-height:1.76;color:var(--dim);border-left:1px solid var(--border);padding-left:13px;margin-top:6px;}
 
-/* ── EDUCATION ── */
+/* EDUCATION */
 #education{background:var(--bg2);}
-.edu-card{background:var(--panel);border:1px solid var(--border);padding:30px;display:grid;grid-template-columns:1fr auto;gap:16px;max-width:760px;position:relative;overflow:hidden;}
-.edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
-.edu-degree{font-family:'Orbitron',sans-serif;font-size:1.05rem;color:#fff;letter-spacing:2px;margin-bottom:6px;}
-.edu-school{font-family:'Rajdhani',sans-serif;font-size:.9rem;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:9px;}
+.edu-card{background:var(--panel);border:1px solid var(--border);padding:30px;
+  display:grid;grid-template-columns:1fr auto;gap:16px;max-width:760px;position:relative;overflow:hidden;}
+.edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.edu-deg{font-family:'Orbitron',sans-serif;font-size:1.05rem;color:#fff;letter-spacing:2px;margin-bottom:6px;}
+.edu-sch{font-family:'Rajdhani',sans-serif;font-size:.9rem;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:9px;}
 .edu-desc{font-size:.85rem;color:var(--dim);line-height:1.7;}
-.edu-year{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;border:1px solid var(--border);padding:5px 11px;height:fit-content;}
+.edu-yr{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;border:1px solid var(--border);padding:5px 11px;height:fit-content;}
 
-/* ── CONTACT ── */
+/* CONTACT */
 #contact{background:var(--bg);}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:46px;max-width:840px;}
-.contact-info{display:flex;flex-direction:column;gap:16px;}
-.contact-item{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);padding:16px 20px;transition:border-color .3s;}
-.contact-item:hover{border-color:var(--accent);}
-.contact-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);}
-.contact-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:3px;}
-.contact-value{font-family:'Rajdhani',sans-serif;font-size:.9rem;color:var(--text);font-weight:500;}
-.cert-section-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:46px;max-width:840px;}
+.ct-info{display:flex;flex-direction:column;gap:16px;}
+.ct-item{display:flex;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);padding:16px 20px;transition:border-color .3s;}
+.ct-item:hover{border-color:var(--accent);}
+.ct-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);}
+.ct-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:3px;}
+.ct-val{font-family:'Rajdhani',sans-serif;font-size:.9rem;color:var(--text);font-weight:500;}
+.cert-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
 .cert-list{display:flex;flex-direction:column;gap:10px;}
 .cert-item{background:var(--panel);border:1px solid var(--border);padding:13px 16px;position:relative;overflow:hidden;}
 .cert-item::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--accent2);}
 .cert-name{font-family:'Rajdhani',sans-serif;font-size:.86rem;color:var(--text);font-weight:600;letter-spacing:1px;}
-.cert-issuer{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:2px;margin-top:3px;}
+.cert-iss{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:2px;margin-top:3px;}
 
-/* ── FOOTER ── */
-footer{background:var(--bg2);border-top:1px solid var(--border);padding:22px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
-footer .logo-sm{font-family:'Orbitron',sans-serif;font-size:.76rem;color:var(--dim);letter-spacing:3px;}
-footer .copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;}
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:22px 52px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.ft-logo{font-family:'Orbitron',sans-serif;font-size:.76rem;color:var(--dim);letter-spacing:3px;}
+.ft-copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;}
 
-/* ── PARTICLES ── */
+/* PARTICLES */
 #particles{position:fixed;inset:0;z-index:-1;pointer-events:none;}
 
-/* ── SCROLL REVEAL ── */
+/* REVEAL */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal.on{opacity:1;transform:translateY(0);}
 
-/* ════════════════════════════
-   TABLET ≤1080px
-════════════════════════════ */
+/* ═══ TABLET ═══ */
 @media(max-width:1080px){
   #hero{padding:76px 30px 46px;gap:22px;}
   section{padding:60px 30px;}
@@ -206,108 +272,90 @@ footer .copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--d
   footer{padding:20px 30px;}
 }
 
-/* ════════════════════════════
-   MOBILE ≤768px
-════════════════════════════ */
+/* ═══ MOBİL ═══ */
 @media(max-width:768px){
-  /* cursor gizle */
   .cursor,.cursor-trail{display:none;}
   body{cursor:auto;}
 
-  /* NAV */
   nav{padding:12px 16px;}
   .nav-links{display:none;}
-  .nav-logo{font-size:.78rem;letter-spacing:2px;}
+  .nav-logo{font-size:.78rem;}
 
-  /* INTRO */
-  #drone-wrapper{display:none;}
-  .mobile-ring{display:flex;}
-  .intro-text-wrap{
-    position:absolute;left:50%;top:auto;
-    bottom:9%;transform:translateX(-50%);
-    text-align:center;width:84%;
-    opacity:0;animation:iInM .7s ease .4s forwards;
+  /* intro */
+  #droneWrap{display:none;}
+  #mobileEmblem{display:block;}
+  .intro-txt{
+    left:50%;top:auto;bottom:9%;
+    transform:translateX(-50%);
+    text-align:center;width:86%;
+    animation:txtInM .7s ease .4s forwards;
   }
-  @keyframes iInM{
-    from{opacity:0;transform:translateX(-50%) translateY(14px)}
+  @keyframes txtInM{
+    from{opacity:0;transform:translateX(-50%) translateY(12px)}
     to{opacity:1;transform:translateX(-50%) translateY(0)}
   }
-  .intro-label{font-size:8px;letter-spacing:3px;margin-bottom:8px;}
-  .intro-name{font-size:clamp(1.6rem,7vw,2.3rem);}
-  .intro-title{font-size:.82rem;letter-spacing:3px;margin-top:7px;}
-  .intro-bar-wrap{width:100%;margin-top:18px;}
-  .intro-bar-label{font-size:8px;}
+  .i-label{font-size:8px;letter-spacing:3px;margin-bottom:8px;}
+  .i-name{font-size:clamp(1.6rem,7vw,2.3rem);}
+  .i-sub{font-size:.82rem;letter-spacing:3px;margin-top:7px;}
+  .i-bar-wrap{width:100%;margin-top:18px;}
+  .i-bar-row{font-size:8px;}
 
-  /* HERO */
+  /* hero */
   #hero{grid-template-columns:1fr;padding:70px 16px 40px;min-height:auto;gap:14px;}
-  .hero-visual{height:230px;}
-  .hero-content{text-align:left;}
-  .hero-eyebrow{font-size:9px;letter-spacing:3px;margin-bottom:12px;gap:10px;}
-  .hero-eyebrow::before{width:20px;}
-  .hero-name{font-size:clamp(1.9rem,8.5vw,2.9rem);letter-spacing:-.5px;}
-  .hero-title{font-size:.86rem;letter-spacing:3px;margin:10px 0 16px;}
-  .hero-desc{font-size:.85rem;line-height:1.72;}
-  .hero-stats{display:none;}
-  .hero-cta{flex-direction:column;gap:9px;margin-top:18px;}
-  .btn-primary,.btn-secondary{width:100%;justify-content:center;clip-path:none;padding:12px 20px;font-size:9px;}
+  .hero-vis{height:240px;}
+  .h-brow{font-size:9px;letter-spacing:3px;margin-bottom:12px;}
+  .h-brow::before{width:20px;}
+  .h-name{font-size:clamp(1.9rem,8.5vw,2.9rem);}
+  .glitch-layer{font-size:clamp(1.9rem,8.5vw,2.9rem);}
+  .h-title{font-size:.86rem;letter-spacing:3px;margin:10px 0 16px;}
+  .h-desc{font-size:.85rem;}
+  .h-stats{display:none;}
+  .h-cta{flex-direction:column;gap:9px;margin-top:18px;}
+  .btn-p,.btn-s{width:100%;justify-content:center;clip-path:none;padding:12px 20px;font-size:9px;}
 
-  /* SECTIONS */
   section{padding:44px 16px;}
-  .section-title{font-size:1rem;letter-spacing:2px;}
-  .section-header{gap:10px;margin-bottom:26px;}
-  .section-num{font-size:8px;}
+  .sec-ttl{font-size:1rem;letter-spacing:2px;}
+  .sec-hdr{gap:10px;margin-bottom:26px;}
 
-  /* SKILLS */
-  .skills-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
-  .skill-item{padding:11px 13px;gap:9px;}
-  .skill-name{font-size:.8rem;}
-  .skill-dot{width:6px;height:6px;}
+  .sk-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .sk-item{padding:11px 13px;gap:9px;}
+  .sk-name{font-size:.8rem;}
 
-  /* EXPERIENCE */
-  .exp-timeline{padding-left:20px;}
-  .exp-timeline::before{display:none;}
+  .exp-line{padding-left:20px;}
+  .exp-line::before{display:none;}
   .exp-dot{left:-26px;top:4px;width:9px;height:9px;}
-  .exp-header{flex-direction:column;gap:4px;}
-  .exp-company{font-size:.82rem;letter-spacing:1px;}
-  .exp-role{font-size:.78rem;letter-spacing:1px;}
-  .exp-date{font-size:7px;align-self:flex-start;padding:3px 7px;}
-  .exp-desc{font-size:.8rem;line-height:1.68;padding-left:9px;}
+  .exp-hdr{flex-direction:column;gap:4px;}
+  .exp-co{font-size:.82rem;letter-spacing:1px;}
+  .exp-role{font-size:.78rem;}
+  .exp-date{font-size:7px;}
+  .exp-desc{font-size:.8rem;padding-left:9px;}
   .exp-item{margin-bottom:28px;}
 
-  /* EDUCATION */
   .edu-card{grid-template-columns:1fr;padding:20px 16px;gap:9px;}
-  .edu-degree{font-size:.9rem;letter-spacing:1px;}
-  .edu-school{font-size:.82rem;letter-spacing:2px;}
+  .edu-deg{font-size:.9rem;}
+  .edu-sch{font-size:.82rem;}
   .edu-desc{font-size:.8rem;}
-  .edu-year{width:fit-content;font-size:8px;}
+  .edu-yr{width:fit-content;}
 
-  /* CONTACT */
-  .contact-grid{grid-template-columns:1fr;gap:24px;}
-  .contact-info{gap:10px;}
-  .contact-item{padding:12px 13px;gap:11px;}
-  .contact-icon{width:30px;height:30px;}
-  .contact-label{font-size:7px;}
-  .contact-value{font-size:.8rem;word-break:break-all;}
-  .cert-list{gap:8px;}
+  .ct-grid{grid-template-columns:1fr;gap:24px;}
+  .ct-info{gap:10px;}
+  .ct-item{padding:12px 13px;gap:11px;}
+  .ct-icon{width:30px;height:30px;}
+  .ct-lbl{font-size:7px;}
+  .ct-val{font-size:.8rem;word-break:break-all;}
   .cert-item{padding:11px 13px;}
   .cert-name{font-size:.8rem;}
-  .cert-issuer{font-size:7px;}
-  .cert-section-label{font-size:8px;margin-bottom:10px;}
 
-  /* FOOTER */
   footer{padding:16px;flex-direction:column;text-align:center;gap:7px;}
-  footer .logo-sm{font-size:.7rem;}
-  footer .copy{font-size:8px;}
 }
 
-/* ── 400px ve altı ── */
 @media(max-width:400px){
-  .skills-grid{grid-template-columns:1fr;}
-  .hero-name{font-size:1.8rem;}
-  .intro-name{font-size:1.5rem;}
-  nav{padding:10px 12px;}
-  #hero{padding:66px 12px 34px;}
+  .sk-grid{grid-template-columns:1fr;}
+  .h-name{font-size:1.8rem;}
+  .glitch-layer{font-size:1.8rem;}
+  .i-name{font-size:1.5rem;}
   section{padding:36px 12px;}
+  #hero{padding:66px 12px 34px;}
 }
 </style>
 </head>
@@ -317,22 +365,19 @@ footer .copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--d
 <div class="cursor-trail" id="cursorTrail"></div>
 <canvas id="particles"></canvas>
 
-<!-- ═══════ INTRO ═══════ -->
+<!-- ══════ INTRO ══════ -->
 <div id="intro">
-  <div class="hud-corner tl"></div><div class="hud-corner tr"></div>
-  <div class="hud-corner bl"></div><div class="hud-corner br"></div>
+  <div class="hud tl"></div><div class="hud tr"></div>
+  <div class="hud bl"></div><div class="hud br"></div>
   <div class="scanline"></div>
 
-  <!-- Mobil halka -->
-  <div class="mobile-ring">
-    <div class="ring-o"></div><div class="ring-m"></div>
-    <div class="ring-i"><div class="ring-d"></div></div>
-  </div>
+  <!-- Mobil emblem (canvas ile çizilecek) -->
+  <canvas id="mobileEmblem"></canvas>
 
-  <!-- Drone (masaüstü) -->
-  <div id="drone-wrapper">
+  <!-- Masaüstü drone -->
+  <div id="droneWrap">
     <div class="drone-bob">
-      <svg class="drone-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <svg width="260" height="260" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="glo"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           <filter id="gl2"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -346,50 +391,50 @@ footer .copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--d
         <circle cx="252" cy="68" r="22" fill="#0b1520" stroke="#00d4ff" stroke-width="1.5" filter="url(#gl2)"/>
         <circle cx="68" cy="252" r="22" fill="#0b1520" stroke="#00d4ff" stroke-width="1.5" filter="url(#gl2)"/>
         <circle cx="252" cy="252" r="22" fill="#0b1520" stroke="#00d4ff" stroke-width="1.5" filter="url(#gl2)"/>
-        <circle cx="68" cy="68" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.32"/>
-        <circle cx="252" cy="68" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.32"/>
-        <circle cx="68" cy="252" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.32"/>
-        <circle cx="252" cy="252" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.32"/>
-        <g class="prop-tl"><ellipse cx="68" cy="68" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="68" cy="68" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
-        <g class="prop-tr"><ellipse cx="252" cy="68" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="252" cy="68" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
-        <g class="prop-bl"><ellipse cx="68" cy="252" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="68" cy="252" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
-        <g class="prop-br"><ellipse cx="252" cy="252" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="252" cy="252" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
+        <circle cx="68" cy="68" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="252" cy="68" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="68" cy="252" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="252" cy="252" r="17" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.3"/>
+        <g class="p-tl"><ellipse cx="68" cy="68" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="68" cy="68" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
+        <g class="p-tr"><ellipse cx="252" cy="68" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="252" cy="68" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
+        <g class="p-bl"><ellipse cx="68" cy="252" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="68" cy="252" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
+        <g class="p-br"><ellipse cx="252" cy="252" rx="32" ry="5" fill="rgba(0,212,255,.27)" stroke="#00d4ff" stroke-width="0.8"/><ellipse cx="252" cy="252" rx="5" ry="32" fill="rgba(0,212,255,.11)" stroke="#00d4ff" stroke-width="0.5"/></g>
         <rect x="115" y="115" width="90" height="90" rx="8" fill="url(#bG)" stroke="#00d4ff" stroke-width="1.5" filter="url(#glo)"/>
         <rect x="125" y="125" width="70" height="70" rx="4" fill="#050a0f" stroke="#1a3a5c" stroke-width="1"/>
         <circle cx="160" cy="160" r="18" fill="#080e15" stroke="#00d4ff" stroke-width="1.2" filter="url(#gl2)"/>
         <circle cx="160" cy="160" r="11" fill="#020508" stroke="#0088aa" stroke-width="1"/>
         <circle cx="160" cy="160" r="5" fill="#00d4ff" opacity="0.6"/>
-        <circle cx="155" cy="155" r="2" fill="white" opacity="0.42"/>
+        <circle cx="155" cy="155" r="2" fill="white" opacity="0.4"/>
         <line x1="115" y1="135" x2="205" y2="135" stroke="#1a3a5c" stroke-width="0.8"/>
         <line x1="115" y1="185" x2="205" y2="185" stroke="#1a3a5c" stroke-width="0.8"/>
         <line x1="135" y1="115" x2="135" y2="205" stroke="#1a3a5c" stroke-width="0.8"/>
         <line x1="185" y1="115" x2="185" y2="205" stroke="#1a3a5c" stroke-width="0.8"/>
-        <rect x="116" y="116" width="8" height="8" fill="#00d4ff" opacity="0.78"/>
-        <rect x="196" y="116" width="8" height="8" fill="#00d4ff" opacity="0.78"/>
-        <rect x="116" y="196" width="8" height="8" fill="#00d4ff" opacity="0.78"/>
-        <rect x="196" y="196" width="8" height="8" fill="#00d4ff" opacity="0.78"/>
-        <circle cx="185" cy="135" r="4" fill="#39ff14" opacity="0.9"><animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.5s" repeatCount="indefinite"/></circle>
-        <path d="M 160 115 A 45 45 0 0 1 205 160" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.18" stroke-dasharray="4 4"/>
-        <path d="M 160 108 A 52 52 0 0 1 212 160" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.1" stroke-dasharray="3 6"/>
+        <rect x="116" y="116" width="8" height="8" fill="#00d4ff" opacity="0.75"/>
+        <rect x="196" y="116" width="8" height="8" fill="#00d4ff" opacity="0.75"/>
+        <rect x="116" y="196" width="8" height="8" fill="#00d4ff" opacity="0.75"/>
+        <rect x="196" y="196" width="8" height="8" fill="#00d4ff" opacity="0.75"/>
+        <circle cx="185" cy="135" r="4" fill="#39ff14" opacity="0.9">
+          <animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <path d="M160 115 A45 45 0 0 1 205 160" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.18" stroke-dasharray="4 4"/>
       </svg>
     </div>
   </div>
 
-  <!-- Intro metin -->
-  <div class="intro-text-wrap">
-    <div class="intro-label">// portfolyo.init()</div>
-    <div class="intro-name">FURKAN<br><span>ÖZDOĞAN</span></div>
-    <div class="intro-title">Bilgisayar Programcısı</div>
-    <div class="intro-bar-wrap">
-      <div class="intro-bar-label"><span>SİSTEM YÜKLENIYOR</span><span id="loadPct">0%</span></div>
-      <div class="intro-bar"><div class="intro-bar-fill" id="barFill"></div></div>
+  <!-- Intro yazı -->
+  <div class="intro-txt">
+    <div class="i-label">// portfolyo.init()</div>
+    <div class="i-name">FURKAN<br><span>ÖZDOĞAN</span></div>
+    <div class="i-sub">Bilgisayar Programcısı</div>
+    <div class="i-bar-wrap">
+      <div class="i-bar-row"><span>SİSTEM YÜKLENIYOR</span><span id="pct">0%</span></div>
+      <div class="i-bar"><div class="i-bar-fill" id="barFill"></div></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════ SITE ═══════ -->
+<!-- ══════ SITE ══════ -->
 <div id="site">
-
   <nav>
     <a href="#hero" class="nav-logo">F<span>.</span>ÖZDOĞAN</a>
     <div class="nav-links">
@@ -402,74 +447,83 @@ footer .copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--d
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="hero-gradient"></div>
-    <div class="hero-visual">
-      <div class="scan-ring-wrap">
-        <div class="scan-ring"></div><div class="scan-ring"></div><div class="scan-ring"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-grad"></div>
+
+    <!-- Sol: Yarış pisti -->
+    <div class="hero-vis">
+      <div class="sring-wrap">
+        <div class="sring"></div><div class="sring"></div><div class="sring"></div>
       </div>
-      <div class="orb orb1"></div><div class="orb orb2"></div>
-      <div class="orb orb3"></div><div class="orb orb4"></div>
-      <canvas id="islandCanvas" width="450" height="450"></canvas>
+      <div class="orb o1"></div><div class="orb o2"></div>
+      <div class="orb o3"></div><div class="orb o4"></div>
+      <canvas id="trackCanvas" width="450" height="450"></canvas>
     </div>
-    <div class="hero-content">
-      <div class="hero-eyebrow">Bilgisayar Programcısı & IT Uzmanı</div>
-      <h1 class="hero-name" data-text="FURKAN ÖZDOĞAN">FURKAN<br><span class="accent">ÖZDOĞAN</span></h1>
-      <p class="hero-title">Computer Programmer</p>
-      <p class="hero-desc">Ağır sanayi ve oyun geliştirme alanlarında deneyim kazanmış, veri raporlama, sistem sorun giderme ve yazılım geliştirme konularında uzmanlaşmış Bilgisayar Programcısı. İş sürekliliğini merkeze alan, kriz anlarında soğukkanlı bir teknik profil.</p>
-      <div class="hero-stats">
-        <div class="stat-card"><div class="stat-num">4+</div><div class="stat-label">Deneyim</div></div>
-        <div class="stat-card"><div class="stat-num">3D</div><div class="stat-label">Unity & Blender</div></div>
-        <div class="stat-card"><div class="stat-num">C#</div><div class="stat-label">C++ Python</div></div>
+
+    <!-- Sağ: Metin -->
+    <div class="hero-txt">
+      <div class="h-brow">Bilgisayar Programcısı & IT Uzmanı</div>
+
+      <!-- İsim: glitch katmanları ayrı span olarak -->
+      <div style="position:relative;display:inline-block;">
+        <h1 class="h-name">FURKAN<br><span class="accent">ÖZDOĞAN</span></h1>
+        <div class="glitch-layer g1" aria-hidden="true">FURKAN<br><span>ÖZDOĞAN</span></div>
+        <div class="glitch-layer g2" aria-hidden="true">FURKAN<br><span>ÖZDOĞAN</span></div>
       </div>
-      <div class="hero-cta">
-        <a href="#experience" class="btn-primary">Deneyimlerimi Gör</a>
-        <a href="#contact" class="btn-secondary">İletişime Geç</a>
+
+      <p class="h-title">Computer Programmer</p>
+      <p class="h-desc">Ağır sanayi ve oyun geliştirme alanlarında deneyim kazanmış, veri raporlama, sistem sorun giderme ve yazılım geliştirme konularında uzmanlaşmış Bilgisayar Programcısı. İş sürekliliğini merkeze alan, kriz anlarında soğukkanlı bir teknik profil.</p>
+      <div class="h-stats">
+        <div class="stat"><div class="snum">3D</div><div class="slbl">Unity & Blender</div></div>
+        <div class="stat"><div class="snum">C#</div><div class="slbl">C++ Python</div></div>
+      </div>
+      <div class="h-cta">
+        <a href="#experience" class="btn-p">Deneyimlerimi Gör</a>
+        <a href="#contact" class="btn-s">İletişime Geç</a>
       </div>
     </div>
   </section>
 
   <!-- BECERİLER -->
   <section id="skills">
-    <div class="section-header reveal"><span class="section-num">// 01</span><h2 class="section-title">BECERİLER</h2><div class="section-line"></div></div>
-    <div class="skills-grid">
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Unity 3D</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Blender 3D Modelleme</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">C# Programlama</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">C++ Programlama</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Python</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">GListEngine</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">İleri Düzey Excel</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Veri Raporlama</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Adobe Photoshop</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Video Kurgu & Editing</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">Cisco Ağ Donanımı</span></div>
-      <div class="skill-item reveal"><div class="skill-dot"></div><span class="skill-name">İş Sürekliliği</span></div>
+    <div class="sec-hdr reveal"><span class="sec-num">// 01</span><h2 class="sec-ttl">BECERİLER</h2><div class="sec-line"></div></div>
+    <div class="sk-grid">
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Unity 3D</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Blender 3D Modelleme</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">C# Programlama</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">C++ Programlama</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Python</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">GListEngine</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">İleri Düzey Excel</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Veri Raporlama</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Adobe Photoshop</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Video Kurgu & Editing</span></div>
+      <div class="sk-item reveal"><div class="sk-dot"></div><span class="sk-name">Cisco Ağ Donanımı</span></div>
     </div>
   </section>
 
   <!-- DENEYİM -->
   <section id="experience">
-    <div class="section-header reveal"><span class="section-num">// 02</span><h2 class="section-title">DENEYİM</h2><div class="section-line"></div></div>
-    <div class="exp-timeline">
+    <div class="sec-hdr reveal"><span class="sec-num">// 02</span><h2 class="sec-ttl">DENEYİM</h2><div class="sec-line"></div></div>
+    <div class="exp-line">
       <div class="exp-item">
-        <div class="exp-dot"><div class="exp-dot-inner"></div></div>
-        <div class="exp-header"><div><div class="exp-company">Kardemir Çelik Sanayi A.Ş</div><div class="exp-role">Operatör</div></div><div class="exp-date">23.02.2026 — Halen</div></div>
+        <div class="exp-dot"><div class="exp-dot-in"></div></div>
+        <div class="exp-hdr"><div><div class="exp-co">Kardemir Çelik Sanayi A.Ş</div><div class="exp-role">Operatör</div></div><div class="exp-date">23.02.2026 — Halen</div></div>
         <p class="exp-desc">Yüksek sıcaklıklı ön ısıtma fırınlarının takibi ve kritik ısıtma çevrimlerinin metalurjik standartlara uygunluğunu gerçek zamanlı denetledi. Üretim hattı ile senkronize fırın yükleme ve boşaltma süreçleri optimize edildi; ileri düzey Excel fonksiyonları kullanılarak periyodik raporlamalar yapıldı. İSG protokollerine tam uyumla sıfır hata odaklı operasyon yürütüldü.</p>
       </div>
       <div class="exp-item">
-        <div class="exp-dot"><div class="exp-dot-inner"></div></div>
-        <div class="exp-header"><div><div class="exp-company">Viennalife A.Ş</div><div class="exp-role">Finansal Danışman</div></div><div class="exp-date">6.10.2025 — 26.01.2026</div></div>
+        <div class="exp-dot"><div class="exp-dot-in"></div></div>
+        <div class="exp-hdr"><div><div class="exp-co">Viennalife A.Ş</div><div class="exp-role">Finansal Danışman</div></div><div class="exp-date">6.10.2025 — 26.01.2026</div></div>
         <p class="exp-desc">Müşteri portföyleri yönetildi ve kriz anlarında anlık troubleshooting uygulanarak operasyonların kesintisiz ilerlemesi sağlandı. Karmaşık finansal modeller analiz edilerek teknik altyapısı bulunmayan son kullanıcılara anlaşılır dilde aktarıldı.</p>
       </div>
       <div class="exp-item">
-        <div class="exp-dot"><div class="exp-dot-inner"></div></div>
-        <div class="exp-header"><div><div class="exp-company">Nitra Games</div><div class="exp-role">Oyun Geliştirici Stajyeri</div></div><div class="exp-date">6.11.2024 — 29.08.2025</div></div>
+        <div class="exp-dot"><div class="exp-dot-in"></div></div>
+        <div class="exp-hdr"><div><div class="exp-co">Nitra Games</div><div class="exp-role">Oyun Geliştirici Stajyeri</div></div><div class="exp-date">6.11.2024 — 29.08.2025</div></div>
         <p class="exp-desc">2D Kule Savunma, 3D Yarış ve FPS türünde oyunların geliştirme ekibinde görev alındı. C++ ve GListEngine kullanılarak oyun mekanikleri kurgulandı; test süreçleri yürütülerek sistem hatalarına anında müdahale edildi ve bellek optimizasyonları sağlandı.</p>
       </div>
       <div class="exp-item">
-        <div class="exp-dot"><div class="exp-dot-inner"></div></div>
-        <div class="exp-header"><div><div class="exp-company">Fix Bilişim</div><div class="exp-role">Yazılım Stajyeri</div></div><div class="exp-date">03.07.2023 — 28.07.2023</div></div>
+        <div class="exp-dot"><div class="exp-dot-in"></div></div>
+        <div class="exp-hdr"><div><div class="exp-co">Fix Bilişim</div><div class="exp-role">Yazılım Stajyeri</div></div><div class="exp-date">03.07.2023 — 28.07.2023</div></div>
         <p class="exp-desc">Kurumsal IT destek ekibinin aktif bir parçası olarak müşteri sistemlerinin kesintisiz çalışması sağlandı. Cisco tabanlı ağ donanımları, Firewall yapılandırmaları ve kurumsal antivirüs süreçleri yönetildi. KVKK uyumlu bulut yedekleme ve anlık sistem hataları analiz edildi; sahada hızlı hotfix üretildi.</p>
       </div>
     </div>
@@ -477,177 +531,240 @@ footer .copy{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--d
 
   <!-- EĞİTİM -->
   <section id="education">
-    <div class="section-header reveal"><span class="section-num">// 03</span><h2 class="section-title">EĞİTİM</h2><div class="section-line"></div></div>
+    <div class="sec-hdr reveal"><span class="sec-num">// 03</span><h2 class="sec-ttl">EĞİTİM</h2><div class="sec-line"></div></div>
     <div class="edu-card reveal">
       <div>
-        <div class="edu-degree">Bilgisayar Programcılığı (Önlisans)</div>
-        <div class="edu-school">Tarsus Üniversitesi</div>
+        <div class="edu-deg">Bilgisayar Programcılığı (Önlisans)</div>
+        <div class="edu-sch">Tarsus Üniversitesi</div>
         <div class="edu-desc">C#, Python ve Veritabanı Yönetimi üzerine kapsamlı eğitim alındı. Yazılım geliştirme temelleri, nesne yönelimli programlama ve veri yönetimi konularında derinlemesine bilgi edinildi.</div>
       </div>
-      <div class="edu-year">2022 — 2024</div>
+      <div class="edu-yr">2022 — 2024</div>
     </div>
   </section>
 
   <!-- İLETİŞİM -->
   <section id="contact">
-    <div class="section-header reveal"><span class="section-num">// 04</span><h2 class="section-title">İLETİŞİM</h2><div class="section-line"></div></div>
-    <div class="contact-grid">
-      <div class="contact-info">
-        <div class="contact-item reveal">
-          <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-          <div><div class="contact-label">Telefon</div><div class="contact-value">+90 542 160 58 73</div></div>
+    <div class="sec-hdr reveal"><span class="sec-num">// 04</span><h2 class="sec-ttl">İLETİŞİM</h2><div class="sec-line"></div></div>
+    <div class="ct-grid">
+      <div class="ct-info">
+        <div class="ct-item reveal">
+          <div class="ct-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="ct-lbl">E-Posta</div><div class="ct-val"><a href="mailto:furkanozdoganfd@gmail.com" target="_blank" style="color:inherit;text-decoration:none;">furkanozdoganfd@gmail.com</a></div></div>
         </div>
-        <div class="contact-item reveal">
-          <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div><div class="contact-label">E-Posta</div><div class="contact-value">furkanozdoganfd@gmail.com</div></div>
+        <div class="ct-item reveal">
+          <div class="ct-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div>
+          <div><div class="ct-lbl">GitHub</div><div class="ct-val"><a href="https://github.com/furkanozdgan?tab=repositories" target="_blank" style="color:inherit;text-decoration:none;">github.com/furkanozdgan</a></div></div>
         </div>
-        <div class="contact-item reveal">
-          <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div>
-          <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/furkanozdgan</div></div>
+        <div class="ct-item reveal">
+          <div class="ct-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div><div class="ct-lbl">LinkedIn</div><div class="ct-val"><a href="https://www.linkedin.com/in/furkan-%C3%B6zdogan-596179254/" target="_blank" style="color:inherit;text-decoration:none;">linkedin.com/in/furkan-özdogan</a></div></div>
         </div>
-        <div class="contact-item reveal">
-          <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div><div class="contact-label">Konum</div><div class="contact-value">İzmir, Türkiye</div></div>
+        <div class="ct-item reveal">
+          <div class="ct-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="ct-lbl">Konum</div><div class="ct-val">İzmir, Türkiye</div></div>
         </div>
       </div>
       <div>
-        <div class="cert-section-label">// Sertifikalar & Dil</div>
+        <div class="cert-lbl">// Sertifikalar & Dil</div>
         <div class="cert-list">
-          <div class="cert-item reveal"><div class="cert-name">C++ ile Bilgisayar Oyunu Programlama</div><div class="cert-issuer">Nitra Games</div></div>
-          <div class="cert-item reveal"><div class="cert-name">Duolingo English Certificate</div><div class="cert-issuer">130 Score — B1 Seviyesi</div></div>
-          <div class="cert-item reveal" style="--accent2:#00d4ff"><div class="cert-name">İngilizce — B1</div><div class="cert-issuer">Dil Yetkinliği</div></div>
-          <div class="cert-item reveal" style="--accent2:#39ff14"><div class="cert-name">Türkçe — Anadil</div><div class="cert-issuer">Dil Yetkinliği</div></div>
+          <div class="cert-item reveal"><div class="cert-name">C++ ile Bilgisayar Oyunu Programlama</div><div class="cert-iss">Nitra Games</div></div>
+          <div class="cert-item reveal"><div class="cert-name">Duolingo English Certificate</div><div class="cert-iss">130 Score — B1 Seviyesi</div></div>
+          <div class="cert-item reveal" style="--accent2:#00d4ff"><div class="cert-name">İngilizce — B1</div><div class="cert-iss">Dil Yetkinliği</div></div>
+          <div class="cert-item reveal" style="--accent2:#39ff14"><div class="cert-name">Türkçe — Anadil</div><div class="cert-iss">Dil Yetkinliği</div></div>
         </div>
       </div>
     </div>
   </section>
 
   <footer>
-    <div class="logo-sm">FURKAN ÖZDOĞAN</div>
-    <div class="copy">© 2026 — TÜM HAKLAR SAKLIDIR</div>
+    <div class="ft-logo">FURKAN ÖZDOĞAN</div>
+    <div class="ft-copy">© 2026 — TÜM HAKLAR SAKLIDIR</div>
   </footer>
 </div>
 
-<script>
-// ── CURSOR ──
-const cursor=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cursor'),trl=document.getElementById('cursorTrail');
 let mx=0,my=0,tx=0,ty=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px';});
-(function a(){tx+=(mx-tx-13)*.15;ty+=(my-ty-13)*.15;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx-5+'px';cur.style.top=my-5+'px';});
+(function a(){tx+=(mx-tx-13)*.15;ty+=(my-ty-13)*.15;trl.style.left=tx+'px';trl.style.top=ty+'px';requestAnimationFrame(a);})();
 
-// ── LOADING ──
-const pctEl=document.getElementById('loadPct'),barFill=document.getElementById('barFill');
+/* ── MOBİL EMBLEM ── */
+(function(){
+  const cv=document.getElementById('mobileEmblem');
+  if(!cv||window.innerWidth>768)return;
+  const dpr=window.devicePixelRatio||1;
+  const W=window.innerWidth, H=window.innerHeight*0.58;
+  cv.width=W*dpr; cv.height=H*dpr;
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const CX=W/2, CY=H/2;
+  let t=0;
+  const orbs=Array.from({length:12},(_,i)=>({
+    a:(i/12)*Math.PI*2, r:90+(i%3)*20,
+    spd:(i%2?1:-1)*(0.008+(i%4)*.003),
+    sz:2+(i%3), c:i%3===0?'#00d4ff':i%3===1?'#ff6b35':'#39ff14'
+  }));
+  const rays=Array.from({length:8},(_,i)=>({angle:(i/8)*Math.PI*2,prog:Math.random(),spd:.007+Math.random()*.004}));
+  function draw(){
+    ctx.clearRect(0,0,W,H); t+=.016;
+    [140,108,76].forEach((r,i)=>{
+      ctx.beginPath();ctx.arc(CX,CY,r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(0,212,255,${.1+i*.06})`;ctx.lineWidth=1;ctx.stroke();
+    });
+    ctx.save();ctx.translate(CX,CY);ctx.rotate(t*.35);
+    ctx.beginPath();ctx.arc(0,0,124,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,212,255,.18)';ctx.lineWidth=1;
+    ctx.setLineDash([7,15]);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    ctx.save();ctx.translate(CX,CY);ctx.rotate(-t*.22);
+    ctx.beginPath();ctx.arc(0,0,102,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,107,53,.15)';ctx.lineWidth=1;
+    ctx.setLineDash([4,18]);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    rays.forEach(ray=>{
+      ray.prog+=ray.spd; if(ray.prog>1)ray.prog=0;
+      const r0=28,r1=124, r=r0+(r1-r0)*ray.prog;
+      const r2=Math.max(r0,r-(r1-r0)*.14);
+      const x1=CX+Math.cos(ray.angle)*r2, y1=CY+Math.sin(ray.angle)*r2;
+      const x2=CX+Math.cos(ray.angle)*r, y2=CY+Math.sin(ray.angle)*r;
+      const g=ctx.createLinearGradient(x1,y1,x2,y2);
+      g.addColorStop(0,'rgba(0,212,255,0)');g.addColorStop(1,'rgba(0,212,255,.7)');
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+      ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();
+    });
+    orbs.forEach(o=>{
+      o.a+=o.spd;
+      const x=CX+Math.cos(o.a)*o.r, y=CY+Math.sin(o.a)*o.r;
+      ctx.beginPath();ctx.arc(x,y,o.sz,0,Math.PI*2);
+      ctx.fillStyle=o.c;ctx.shadowColor=o.c;ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;
+    });
+    /* merkez */
+    ctx.beginPath();ctx.arc(CX,CY,34,0,Math.PI*2);
+    ctx.fillStyle='rgba(11,21,32,.95)';ctx.fill();
+    ctx.strokeStyle='#00d4ff';ctx.lineWidth=2;
+    ctx.shadowColor='#00d4ff';ctx.shadowBlur=14;ctx.stroke();ctx.shadowBlur=0;
+    ctx.save();ctx.translate(CX,CY);ctx.rotate(t*.25);
+    ctx.beginPath();
+    for(let i=0;i<6;i++){const a=(i/6)*Math.PI*2;i?ctx.lineTo(Math.cos(a)*19,Math.sin(a)*19):ctx.moveTo(Math.cos(a)*19,Math.sin(a)*19);}
+    ctx.closePath();ctx.strokeStyle='rgba(0,212,255,.45)';ctx.lineWidth=1;ctx.stroke();
+    ctx.restore();
+    ctx.beginPath();ctx.arc(CX,CY,5,0,Math.PI*2);
+    ctx.fillStyle='#00d4ff';ctx.shadowColor='#00d4ff';ctx.shadowBlur=18;ctx.fill();ctx.shadowBlur=0;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── LOADING → REVEAL ── */
+const pctEl=document.getElementById('pct');
+const barEl=document.getElementById('barFill');
 let p=0;
+
 function revealSite(){
   document.getElementById('intro').classList.add('hide');
-  document.getElementById('site').classList.add('visible');
-  initRacing(); initParticles(); initReveal();
+  document.getElementById('site').classList.add('on');
+  startRacing();
+  startParticles();
+  startReveal();
 }
+
 const lt=setInterval(()=>{
-  p=Math.min(p+Math.random()*3+0.6,100);
+  p=Math.min(p+Math.random()*3+.8,100);
   const v=Math.floor(p);
   pctEl.textContent=v+'%';
-  barFill.style.width=v+'%';
-  if(p>=100){pctEl.textContent='100%';barFill.style.width='100%';clearInterval(lt);setTimeout(revealSite,700);}
+  barEl.style.width=v+'%';
+  if(p>=100){
+    clearInterval(lt);
+    pctEl.textContent='100%';
+    barEl.style.width='100%';
+    setTimeout(revealSite,700);
+  }
 },44);
 
-// ── RACING TRACK ──
-function initRacing(){
-  const cv=document.getElementById('islandCanvas');
+/* ── YARIŞPISTI ── */
+function startRacing(){
+  const cv=document.getElementById('trackCanvas');
   if(!cv)return;
-  const ctx=cv.getContext('2d'),W=450,H=450;
-  cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d'), W=450, H=450;
+  cv.width=W; cv.height=H;
   const CX=W/2,CY=H/2,ORX=188,ORY=142,IRX=113,IRY=74;
   const MRX=(ORX+IRX)/2,MRY=(ORY+IRY)/2;
   function pt(a,rx,ry){return{x:CX+Math.cos(a)*rx,y:CY+Math.sin(a)*ry};}
   const CC=['#ff3b3b','#00d4ff','#ffcc00','#39ff14','#ff6b35'];
-  const cars=Array.from({length:5},(_,i)=>({a:(i/5)*Math.PI*2,spd:0.018+i*.003+Math.random()*.004,col:CC[i],tr:[],tMax:20,len:13,wid:6}));
+  const cars=Array.from({length:5},(_,i)=>({a:(i/5)*Math.PI*2,spd:.018+i*.003+Math.random()*.004,c:CC[i],tr:[],tMax:20,len:13,w:6}));
   const sparks=[];
   function spk(x,y,c){if(sparks.length>55)return;for(let i=0;i<3;i++)sparks.push({x,y,vx:(Math.random()-.5)*2.7,vy:(Math.random()-.5)*2.7,life:1,c,sz:Math.random()*2+.4});}
   const lts=Array.from({length:11},(_,i)=>({x:56+i*33,b:Math.random()*Math.PI*2}));
   let fr=0;
-
   function drawTrack(){
-    ctx.save();ctx.shadowColor='rgba(0,0,0,.42)';ctx.shadowBlur=26;
-    ctx.beginPath();ctx.ellipse(CX,CY+7,ORX+4,ORY+4,0,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.22)';ctx.fill();ctx.restore();
     ctx.beginPath();ctx.ellipse(CX,CY,ORX,ORY,0,0,Math.PI*2);ctx.fillStyle='#111820';ctx.fill();
     ctx.beginPath();ctx.ellipse(CX,CY,ORX,ORY,0,0,Math.PI*2);ctx.ellipse(CX,CY,IRX,IRY,0,Math.PI*2,0,true);ctx.fillStyle='#1c2530';ctx.fill();
     const gg=ctx.createRadialGradient(CX,CY,0,CX,CY,IRX);gg.addColorStop(0,'#0d1f14');gg.addColorStop(1,'#0a1510');
     ctx.beginPath();ctx.ellipse(CX,CY,IRX,IRY,0,0,Math.PI*2);ctx.fillStyle=gg;ctx.fill();
     ctx.save();ctx.beginPath();ctx.ellipse(CX,CY,IRX,IRY,0,0,Math.PI*2);ctx.clip();
-    ctx.strokeStyle='rgba(0,212,255,.055)';ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(0,212,255,.05)';ctx.lineWidth=1;
     for(let i=-IRX;i<IRX;i+=17){ctx.beginPath();ctx.moveTo(CX+i,CY-IRY);ctx.lineTo(CX+i,CY+IRY);ctx.stroke();}
     ctx.restore();
-    ctx.beginPath();ctx.arc(CX,CY,29,0,Math.PI*2);ctx.strokeStyle='rgba(0,212,255,.17)';ctx.lineWidth=1;ctx.stroke();
-    ctx.fillStyle='rgba(0,212,255,.52)';ctx.font='bold 9px "Share Tech Mono",monospace';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('F.ÖZDOĞAN',CX,CY-6);ctx.fillStyle='rgba(0,212,255,.28)';ctx.font='7px "Share Tech Mono",monospace';ctx.fillText('RACING CIRCUIT',CX,CY+7);
-    ctx.beginPath();ctx.ellipse(CX,CY,ORX-3,ORY-3,0,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.ellipse(CX,CY,IRX+3,IRY+3,0,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=2;ctx.stroke();
-    ctx.setLineDash([7,9]);ctx.beginPath();ctx.ellipse(CX,CY,MRX,MRY,0,0,Math.PI*2);ctx.strokeStyle='rgba(255,220,0,.16)';ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);
+    ctx.beginPath();ctx.arc(CX,CY,28,0,Math.PI*2);ctx.strokeStyle='rgba(0,212,255,.16)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='rgba(0,212,255,.5)';ctx.font='bold 9px "Share Tech Mono",monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('F.ÖZDOĞAN',CX,CY-6);ctx.fillStyle='rgba(0,212,255,.26)';ctx.font='7px "Share Tech Mono",monospace';ctx.fillText('RACING CIRCUIT',CX,CY+7);
+    ctx.beginPath();ctx.ellipse(CX,CY,ORX-3,ORY-3,0,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.11)';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.ellipse(CX,CY,IRX+3,IRY+3,0,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.11)';ctx.lineWidth=2;ctx.stroke();
+    ctx.setLineDash([7,9]);ctx.beginPath();ctx.ellipse(CX,CY,MRX,MRY,0,0,Math.PI*2);ctx.strokeStyle='rgba(255,220,0,.15)';ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);
     [[0,.13],[Math.PI*.5,.13],[Math.PI,.13],[Math.PI*1.5,.13]].forEach(([a,sp])=>{
-      for(let s=-sp;s<sp;s+=.04){const p1=pt(a+s,ORX,ORY),p2=pt(a+s,ORX-8,ORY-5);const ev=Math.floor((s+sp)/.04)%2===0;
-        ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.strokeStyle=ev?'rgba(255,55,55,.42)':'rgba(255,255,255,.22)';ctx.lineWidth=3;ctx.stroke();}
+      for(let s=-sp;s<sp;s+=.04){const p1=pt(a+s,ORX,ORY),p2=pt(a+s,ORX-8,ORY-5);
+        ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
+        ctx.strokeStyle=Math.floor((s+sp)/.04)%2===0?'rgba(255,55,55,.4)':'rgba(255,255,255,.2)';ctx.lineWidth=3;ctx.stroke();}
     });
     const sf1=pt(0,ORX,ORY),sf2=pt(0,IRX,IRY);
-    for(let k=0;k<6;k++){const r=k/6,r2=(k+1)/6;ctx.beginPath();ctx.moveTo(sf1.x+(sf2.x-sf1.x)*r,sf1.y+(sf2.y-sf1.y)*r);ctx.lineTo(sf1.x+(sf2.x-sf1.x)*r2,sf1.y+(sf2.y-sf1.y)*r2);ctx.strokeStyle=k%2===0?'rgba(255,255,255,.62)':'rgba(0,0,0,.62)';ctx.lineWidth=5;ctx.stroke();}
+    for(let k=0;k<6;k++){ctx.beginPath();ctx.moveTo(sf1.x+(sf2.x-sf1.x)*(k/6),sf1.y+(sf2.y-sf1.y)*(k/6));ctx.lineTo(sf1.x+(sf2.x-sf1.x)*((k+1)/6),sf1.y+(sf2.y-sf1.y)*((k+1)/6));ctx.strokeStyle=k%2?'rgba(0,0,0,.6)':'rgba(255,255,255,.6)';ctx.lineWidth=5;ctx.stroke();}
   }
-
   function drawCar(car){
     const pos=pt(car.a,MRX,MRY),ah=pt(car.a+.012,MRX,MRY),ang=Math.atan2(ah.y-pos.y,ah.x-pos.x);
     car.tr.unshift({x:pos.x,y:pos.y});if(car.tr.length>car.tMax)car.tr.pop();
-    car.tr.forEach((p2,i)=>{const al=(1-i/car.tMax)*.42;ctx.beginPath();ctx.arc(p2.x,p2.y,2.1-i*.07,0,Math.PI*2);ctx.fillStyle=car.col+Math.floor(al*255).toString(16).padStart(2,'0');ctx.fill();});
-    ctx.save();ctx.shadowColor=car.col;ctx.shadowBlur=11;ctx.translate(pos.x,pos.y);ctx.rotate(ang);
-    ctx.beginPath();ctx.roundRect(-car.len/2,-car.wid/2,car.len,car.wid,2);ctx.fillStyle=car.col;ctx.fill();
-    ctx.beginPath();ctx.ellipse(1,0,car.len*.2,car.wid*.32,0,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.7)';ctx.fill();
-    ctx.beginPath();ctx.rect(car.len/2-2,-car.wid/2-2,3,car.wid+4);ctx.fillStyle='#ffffff2e';ctx.fill();
+    car.tr.forEach((p2,i)=>{const al=(1-i/car.tMax)*.4;ctx.beginPath();ctx.arc(p2.x,p2.y,2.1-i*.07,0,Math.PI*2);ctx.fillStyle=car.c+Math.floor(al*255).toString(16).padStart(2,'0');ctx.fill();});
+    ctx.save();ctx.shadowColor=car.c;ctx.shadowBlur=11;ctx.translate(pos.x,pos.y);ctx.rotate(ang);
+    ctx.beginPath();ctx.roundRect(-car.len/2,-car.w/2,car.len,car.w,2);ctx.fillStyle=car.c;ctx.fill();
+    ctx.beginPath();ctx.ellipse(1,0,car.len*.2,car.w*.32,0,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,.7)';ctx.fill();
     ctx.restore();
-    if(Math.random()<.1&&car.spd>.021)spk(pos.x,pos.y,car.col);
+    if(Math.random()<.1&&car.spd>.021)spk(pos.x,pos.y,car.c);
   }
-
   function drawSparks(){
-    for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.life-=.07;if(s.life<=0){sparks.splice(i,1);continue;}
-      ctx.beginPath();ctx.arc(s.x,s.y,s.sz*s.life,0,Math.PI*2);ctx.fillStyle=s.c+Math.floor(s.life*192).toString(16).padStart(2,'0');ctx.fill();}
+    for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.life-=.07;
+      if(s.life<=0){sparks.splice(i,1);continue;}ctx.beginPath();ctx.arc(s.x,s.y,s.sz*s.life,0,Math.PI*2);ctx.fillStyle=s.c+Math.floor(s.life*188).toString(16).padStart(2,'0');ctx.fill();}
   }
-
   function drawHUD(){
-    ctx.fillStyle='rgba(16,30,46,.76)';ctx.fillRect(36,12,W-72,20);ctx.strokeStyle='rgba(0,212,255,.16)';ctx.lineWidth=1;ctx.strokeRect(36,12,W-72,20);
-    lts.forEach((l,i)=>{l.b+=.04+i*.002;const on=Math.sin(l.b+fr*.013)>.26;ctx.beginPath();ctx.arc(l.x,22,3.2,0,Math.PI*2);ctx.fillStyle=on?'#ffdd00':'#261800';if(on){ctx.shadowColor='#ffdd00';ctx.shadowBlur=8;}ctx.fill();ctx.shadowBlur=0;});
-    ctx.fillStyle='rgba(0,212,255,.42)';ctx.font='8px "Share Tech Mono",monospace';ctx.textAlign='right';ctx.fillText('LIVE',W-44,26);
-    ctx.textAlign='left';ctx.fillText('LAP '+(Math.floor(fr/275)+1),44,26);
-    ctx.strokeStyle='rgba(0,212,255,.27)';ctx.lineWidth=1.4;
-    const b=15;[[10,10],[W-10,10],[10,H-10],[W-10,H-10]].forEach(([x,y],i)=>{const sx=i%2===0?1:-1,sy=i<2?1:-1;ctx.beginPath();ctx.moveTo(x+sx*b,y);ctx.lineTo(x,y);ctx.lineTo(x,y+sy*b);ctx.stroke();});
-    const fst=cars.reduce((a,b2)=>a.spd>b2.spd?a:b2);const sp=(fst.spd-.018)/.02;
-    ctx.fillStyle='rgba(0,0,0,.36)';ctx.fillRect(11,H-26,72,6);ctx.fillStyle=fst.col;ctx.fillRect(11,H-26,72*sp,6);
-    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='6px "Share Tech Mono"';ctx.textAlign='left';ctx.fillText('TOP SPEED',11,H-30);
+    ctx.fillStyle='rgba(16,30,46,.74)';ctx.fillRect(36,12,W-72,20);ctx.strokeStyle='rgba(0,212,255,.15)';ctx.lineWidth=1;ctx.strokeRect(36,12,W-72,20);
+    lts.forEach((l,i)=>{l.b+=.04+i*.002;const on=Math.sin(l.b+fr*.013)>.26;ctx.beginPath();ctx.arc(l.x,22,3,0,Math.PI*2);ctx.fillStyle=on?'#ffdd00':'#261800';if(on){ctx.shadowColor='#ffdd00';ctx.shadowBlur=8;}ctx.fill();ctx.shadowBlur=0;});
+    ctx.fillStyle='rgba(0,212,255,.4)';ctx.font='8px "Share Tech Mono",monospace';ctx.textAlign='right';ctx.fillText('LIVE',W-44,26);ctx.textAlign='left';ctx.fillText('LAP '+(Math.floor(fr/275)+1),44,26);
+    ctx.strokeStyle='rgba(0,212,255,.25)';ctx.lineWidth=1.4;
+    const b=15;[[10,10],[W-10,10],[10,H-10],[W-10,H-10]].forEach(([x,y],i)=>{const sx=i%2?-1:1,sy=i<2?1:-1;ctx.beginPath();ctx.moveTo(x+sx*b,y);ctx.lineTo(x,y);ctx.lineTo(x,y+sy*b);ctx.stroke();});
+    const fst=cars.reduce((a,b)=>a.spd>b.spd?a:b);ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(11,H-26,72,6);ctx.fillStyle=fst.c;ctx.fillRect(11,H-26,72*((fst.spd-.018)/.02),6);
   }
-
   (function render(){
     ctx.clearRect(0,0,W,H);
-    const bg=ctx.createRadialGradient(CX,CY,0,CX,CY,W*.7);bg.addColorStop(0,'#0c1825');bg.addColorStop(1,'#050a0f');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    drawTrack();
-    cars.forEach(car=>{car.a+=car.spd;if(car.a>Math.PI*2)car.a-=Math.PI*2;drawCar(car);});
-    drawSparks();drawHUD();fr++;requestAnimationFrame(render);
+    const bg=ctx.createRadialGradient(CX,CY,0,CX,CY,W*.7);bg.addColorStop(0,'#0c1825');bg.addColorStop(1,'#050a0f');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    drawTrack();cars.forEach(car=>{car.a+=car.spd;if(car.a>Math.PI*2)car.a-=Math.PI*2;drawCar(car);});drawSparks();drawHUD();fr++;requestAnimationFrame(render);
   })();
 }
 
-// ── PARTICLES ──
-function initParticles(){
+/* ── PARTICLES ── */
+function startParticles(){
   const cv=document.getElementById('particles'),ctx=cv.getContext('2d');
   cv.width=window.innerWidth;cv.height=window.innerHeight;
   window.addEventListener('resize',()=>{cv.width=window.innerWidth;cv.height=window.innerHeight;});
-  const pts=Array.from({length:65},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.36,vy:(Math.random()-.5)*.36,r:Math.random()*1.3+.4,a:Math.random()*.42+.07}));
+  const pts=Array.from({length:65},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.3+.4,a:Math.random()*.4+.07}));
   (function draw(){
     ctx.clearRect(0,0,cv.width,cv.height);
     pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=cv.width;if(p.x>cv.width)p.x=0;if(p.y<0)p.y=cv.height;if(p.y>cv.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,212,255,${p.a})`;ctx.fill();});
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<112){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,212,255,${.065*(1-d/112)})`;ctx.lineWidth=.5;ctx.stroke();}}
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<110){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,212,255,${.06*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke();}}
     requestAnimationFrame(draw);
   })();
 }
 
-// ── SCROLL REVEAL ──
-function initReveal(){
-  const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.1});
+/* ── SCROLL REVEAL ── */
+function startReveal(){
+  const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');});},{threshold:.1});
   document.querySelectorAll('.reveal,.exp-item').forEach(el=>io.observe(el));
 }
 </script>
